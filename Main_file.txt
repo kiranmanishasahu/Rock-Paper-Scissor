@@ -1,0 +1,89 @@
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
+
+import java.util.Random;
+
+public class MainActivity extends AppCompatActivity {
+    TextView t1, t2, t3, t4;
+    int userscore = 0, compscore = 0;
+    Random random;
+    private static final String TAG = "MainActivity";
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        t1 = findViewById(R.id.score);
+        t2 = findViewById(R.id.compselc);
+        t3 = findViewById(R.id.userselc);
+        t4 = findViewById(R.id.result);
+
+        t2.setText(" ");
+        t3.setText(" ");
+        t4.setText(" ");
+        random=new Random();
+    }
+
+    public void ResetButton(View view) {
+        t4.setText(" ");
+        t3.setText(" ");
+        t2.setText(" ");
+        userscore=0;
+        compscore=0;
+        t1(userscore,compscore);
+    }
+
+    public void rpsButtonSelected(View view) {
+        int useSelection = Integer.parseInt(view.getTag().toString());
+        Log.i(TAG, "rpsButtonSelected: " + useSelection);
+        matchgame(useSelection);
+    }
+    private  void matchgame(int userSelection){
+        int low=1;
+        int high=3;
+        int compselection=random.nextInt(high)+low;
+        if(userSelection==compselection){
+            //tie
+            t4.setText("Tie");
+        }
+        else if( (userSelection-compselection) % 3 == 1){
+            //use
+            userscore++;
+            t4.setText("Hureey:) You Won!!");
+        }
+        else {
+            //comp wins
+            compscore++;
+            t4.setText("Oopps:( You Lost!!");
+        }
+        switch (userSelection){
+            case 1:
+                t3.setText("Rock");
+                break;
+            case 2:
+                t3.setText("paper");
+                break;
+            case 3:
+                t3.setText("scissor");
+        }
+        switch (compselection){
+            case 1:
+                t2.setText("Rock");
+                break;
+            case 2:
+                t2.setText("paper");
+                break;
+            case 3:
+                t2.setText("scissor");
+        }
+        t1(userscore,compscore);
+    }
+    private  void  t1(int userscore,int compscore){
+        t1.setText(String.valueOf(userscore)+" : " + String.valueOf(compscore));
+
+    }
+}
